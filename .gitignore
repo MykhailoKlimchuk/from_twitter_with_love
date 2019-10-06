@@ -1,3 +1,6 @@
 /venv
 /.idea
 /.git
+/tg_bot/token.txt
+/configs
+/db
