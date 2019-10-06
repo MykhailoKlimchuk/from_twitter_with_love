@@ -8,6 +8,7 @@ URL = "http://twitrss.me/twitter_user_to_rss/?user=genadiy_g&fetch=Fetch+RSS"
 with urlopen(URL, timeout=10) as r:
     items = etree.parse(r).find('channel').findall('item')
 
+
 links = [item.find('link').text for item in items]
 print(links)
 
