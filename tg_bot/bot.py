@@ -47,7 +47,3 @@ def button_click(message):
 
     if user.get_subscribe_status is not None:
         user.process_subscribe_data(message.text)
-
-
-
-bot.polling()

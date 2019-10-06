@@ -33,9 +33,9 @@ class User(Base):
             return False
 
     def process_subscribe_data(self, subscribe_id):
-        if self.get_subscribe_status() is True:
+        if self.wants_to_subscribe is True:
             print(f'subscribe {subscribe_id}')
-        else:
+        if self.wants_to_unsubscribe is True:
             print(f'unsubscribe {subscribe_id}')
 
 
