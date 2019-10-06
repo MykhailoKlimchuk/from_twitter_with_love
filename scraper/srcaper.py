@@ -28,9 +28,7 @@ async def get_user_twits(user_name):
 
     async with aiohttp.ClientSession(loop=loop) as session:
         tasks = [get_twit(session, link) for link in links]
-        twits = await asyncio.gather(*tasks)
-
-    return twits
+        return await asyncio.gather(*tasks)
 
 loop = asyncio.get_event_loop()
 twits = loop.run_until_complete(get_user_twits('genadiy_g'))
