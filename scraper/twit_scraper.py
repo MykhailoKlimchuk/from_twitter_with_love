@@ -4,6 +4,7 @@ from xml.etree import ElementTree as etree
 from db_scripts import twits as twits_db
 import asyncio
 import aiohttp
+from urllib.error import HTTPError
 
 'genadiy_g'
 URL_MASK = "http://twitrss.me/twitter_user_to_rss/?user={}&fetch=Fetch+RSS"
@@ -35,6 +36,18 @@ async def get_followings_twits(following_id):
         tasks = [get_twit(session, link, following_id) for link in links]
         return await asyncio.gather(*tasks)
 
-loop = asyncio.get_event_loop()
-twits = loop.run_until_complete(get_followings_twits('genadiy_g'))
-print(twits)
+
+def check_following_exists(following_id):
+    url = URL_MASK.format(following_id)
+    try:
+        urlopen(url, timeout=10)
+        return True
+    except HTTPError:
+        return False
+
+# loop = asyncio.get_event_loop()
+# twits = loop.run_until_complete(get_followings_twits('genadiy_g'))
+# print(twits)
+
+# print(check_following_exists('genadiy_g'))
+

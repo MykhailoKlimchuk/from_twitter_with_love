@@ -3,6 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db_scripts.user import User
+# from scraper.twit_scraper import check_following_exists
+
 
 Base = declarative_base()
 engine = create_engine('sqlite:///db/db.sqlite', echo=False)

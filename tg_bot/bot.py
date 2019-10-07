@@ -1,6 +1,7 @@
 import telebot
 from db_scripts import user as user_db
 from db_scripts import following as following_db
+from scraper.twit_scraper import check_following_exists
 
 
 with open('configs/token') as token_file:
@@ -63,9 +64,16 @@ def button_click(message):
 
 def resolve_followings_id(user, following_id, session):
     response_message = ''
+    following_id = following_id[1:]
+
     if user.get_subscribe_status() is True:
-        following_db.add_following(following_id, user.user_id, session)
+        if check_following_exists(following_id) is False:
+            response_message = f'Я не нашел в твиттере пользователя {following_id}'
+        else:
+            following_db.add_following(following_id, user.user_id, session)
+            response_message = f'Вы подписались на {following_id}'
     else:
-        following_db.del_following(following_id, user.user_id, session)
+        following_db.del_following( following_id, user.user_id, session )
+
     return response_message
 
