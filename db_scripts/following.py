@@ -37,14 +37,23 @@ def get_following(following_id, user_id, session):
 
 
 def add_following(following_id, user_id, session):
+    exists_records = get_following(following_id, user_id, session)
+
+    if len(exists_records) != 0:
+        return
+
     twit = Following(following_id, user_id)
     session.add(twit)
 
 
 def del_following(following_id, user_id, session):
     exists_records = get_following(following_id, user_id, session)
+    if len(exists_records) == 0:
+        return False
+
     for following in exists_records:
         session.delete(following)
+    return True
 
 
 def create_table():

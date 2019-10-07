@@ -63,7 +63,6 @@ def button_click(message):
 
 
 def resolve_followings_id(user, following_id, session):
-    response_message = ''
     following_id = following_id[1:]
 
     if user.get_subscribe_status() is True:
@@ -73,7 +72,10 @@ def resolve_followings_id(user, following_id, session):
             following_db.add_following(following_id, user.user_id, session)
             response_message = f'Вы подписались на {following_id}'
     else:
-        following_db.del_following( following_id, user.user_id, session )
+        if following_db.del_following( following_id, user.user_id, session) is True:
+            response_message = f'Вы отписались от {following_id}'
+        else:
+            response_message = f'{following_id} нету в ваших подписках'
 
     return response_message
 
