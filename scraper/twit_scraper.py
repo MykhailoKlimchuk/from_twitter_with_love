@@ -19,6 +19,7 @@ async def get_twit(session, link, following_id):
         twits_text = soup.find(class_='TweetTextSize TweetTextSize--jumbo js-tweet-text tweet-text').text
         twits_text = twits_text.split('pic.twitter.com')[0] if 'pic.twitter.com' in twits_text else twits_text
         twit = twits_db.Twit(twit_id, following_id, twits_text)
+        # twit = twits_db.add_twit(twit_id, following_id, twits_text)
     return twit
 
 

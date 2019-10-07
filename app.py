@@ -39,6 +39,9 @@ def flatten(x):
 
 def publish_twits(twits):
     for twit in twits:
+        if twits_db.get_twit(twit.twit_id) is not None:
+            continue
+
         followings = following_db.get_following_by_following_id(twit.following_id)
         for following in followings:
             user = user_db.get_user(following.user_id)[0]
@@ -56,5 +59,6 @@ if __name__ == '__main__':
     twits = flatten(twits)
     print(twits)
     publish_twits(twits)
+    twits_db.commit_twits(twits)
 
     bot.polling()

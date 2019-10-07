@@ -42,22 +42,40 @@ def get_twit(twit_id):
     return exists_records[0]
 
 
-def __add_twit(twit_id, following_id, twit_text, session):
-    if get_twit(twit_id) is not None:
-        return
-    twit = Twit(twit_id, following_id, twit_text)
-    session.add(twit)
-
-
-def add_twits(following_id, twits):
+def add_twit(twit_id, following_id, twit_text):
     Session = sessionmaker(bind=engine)
     Session.configure(bind=engine)
     session = Session()
 
-    for twit_id, twit_text in twits.items():
-        __add_twit(twit_id, following_id, twit_text, session)
+    if get_twit(twit_id) is not None:
+        session.commit()
+        return
 
+    twit = Twit(twit_id, following_id, twit_text)
+    session.add(twit)
     session.commit()
+
+    return twit
+
+def commit_twits(twits):
+    Session = sessionmaker(bind=engine)
+    Session.configure(bind=engine)
+    session = Session()
+
+    for twit in twits:
+        session.add(twit)
+    session.commit()
+
+
+# def add_twits(following_id, twits):
+#     Session = sessionmaker(bind=engine)
+#     Session.configure(bind=engine)
+#     session = Session()
+#
+#     for twit_id, twit_text in twits.items():
+#         __add_twit(twit_id, following_id, twit_text, session)
+#
+#     session.commit()
 
 
 def create_table():
