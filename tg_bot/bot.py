@@ -9,7 +9,7 @@ with open('configs/token') as token_file:
 
 
 def subscribe(message):
-    user, session = user_db.get_user(message.from_user.id)
+    user, session = user_db.get_user(message.from_user.id, message.chat.id)
     user.wants_to_subscribe = True
     user.wants_to_unsubscribe = False
     session.commit()
@@ -18,7 +18,7 @@ def subscribe(message):
 
 
 def unsubscribe(message):
-    user, session = user_db.get_user(message.from_user.id)
+    user, session = user_db.get_user(message.from_user.id, message.chat.id)
     user.wants_to_subscribe = False
     user.wants_to_unsubscribe = True
     session.commit()
@@ -39,7 +39,7 @@ keyboard1.row(*COMMANDS.keys())
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    user, session = user_db.get_user(message.from_user.id)
+    user, session = user_db.get_user(message.from_user.id, message.chat.id)
     response_message = f'Привет, {message.from_user.first_name} я буду пересылать тебе твиты твоих подписок'
 
     bot.send_message(message.chat.id, response_message, reply_markup=keyboard1)
@@ -49,7 +49,7 @@ def start_message(message):
 @bot.message_handler(content_types=['text'])
 def button_click(message):
     button_cb = COMMANDS.get(message.text, None)
-    user, session = user_db.get_user(message.from_user.id)
+    user, session = user_db.get_user(message.from_user.id, message.chat.id)
 
     if button_cb is not None:
         button_cb(message)
@@ -78,4 +78,3 @@ def resolve_followings_id(user, following_id, session):
             response_message = f'{following_id} нету в ваших подписках'
 
     return response_message
-

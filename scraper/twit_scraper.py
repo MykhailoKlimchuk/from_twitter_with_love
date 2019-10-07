@@ -45,6 +45,7 @@ def check_following_exists(following_id):
     except HTTPError:
         return False
 
+
 # loop = asyncio.get_event_loop()
 # twits = loop.run_until_complete(get_followings_twits('genadiy_g'))
 # print(twits)

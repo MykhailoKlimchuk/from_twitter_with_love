@@ -30,7 +30,21 @@ def get_user_twits(following_id):
     return exists_records
 
 
+def get_twit(twit_id):
+    Session = sessionmaker(bind=engine)
+    Session.configure(bind=engine)
+    session = Session()
+    exists_records = [user for user in session.query(Twit).filter(Twit.twit_id == twit_id)]
+    if len(exists_records) == 0:
+        session.commit()
+        return
+    session.commit()
+    return exists_records[0]
+
+
 def __add_twit(twit_id, following_id, twit_text, session):
+    if get_twit(twit_id) is not None:
+        return
     twit = Twit(twit_id, following_id, twit_text)
     session.add(twit)
 

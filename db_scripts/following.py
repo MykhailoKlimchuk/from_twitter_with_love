@@ -36,6 +36,17 @@ def get_following(following_id, user_id, session):
     return exists_records
 
 
+def get_following_by_following_id(following_id):
+    Session = sessionmaker(bind=engine)
+    Session.configure(bind=engine)
+    session = Session()
+
+    exists_records = [twit for twit in session.query(Following).filter(Following.following_id == following_id)]
+    session.commit()
+
+    return exists_records
+
+
 def add_following(following_id, user_id, session):
     exists_records = get_following(following_id, user_id, session)
 
